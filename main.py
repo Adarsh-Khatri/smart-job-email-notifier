@@ -26,15 +26,23 @@ def main():
     processed_ids = load_processed()
 
     for email in emails:
-        if email['id'] in processed_ids:
-            continue  # 🔥 skip duplicates
 
-        if is_job_mail(email['subject'], email['sender']):
+        subject = email['subject'].lower()
+        sender = email['sender'].lower()
+
+        # HARD BLOCK BEFORE ANYTHING
+        if "github" in sender:
+            print("Skipped GitHub email:", subject)
+            continue
+
+        if "notification" in sender or "noreply" in sender:
+            print("Skipped system email:", subject)
+            continue
+
+        # ✅ now apply job filter
+        if is_job_mail(subject, sender):
             message = f"🚀 Job Alert!\n\n{email['subject']}\nFrom: {email['sender']}"
             send_to_telegram(message)
-            print("Sent:", email['subject'])
-
-            processed_ids.add(email['id'])
 
     save_processed(processed_ids)
 
