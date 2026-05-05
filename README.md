@@ -1,4 +1,4 @@
-# 🚀 # 🚀 Smart Job Email Notifier
+# 🚀 Smart Job Email Notifier
 AI-powered system to detect job-related emails and send instant Telegram alerts.
 
 
