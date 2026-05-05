@@ -1,9 +1,8 @@
-
 name: Job Email Checker
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # every 5 minutes
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -11,16 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
         python-version: "3.10"
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+    - run: pip install -r requirements.txt
+
+    # 🔐 Create token.json securely
+    - name: Create token file
+      run: echo '${{ secrets.GMAIL_TOKEN }}' > token.json
 
     - name: Run script
       env:
