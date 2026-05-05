@@ -1,0 +1,5 @@
+ai-email-recruitment/
+__pycache__/
+.env
+token.json
+credentials.json
