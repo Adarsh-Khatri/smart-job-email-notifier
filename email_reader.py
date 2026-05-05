@@ -33,9 +33,12 @@ def authenticate_gmail():
 #     return service
 
 
-def get_emails(service, max_results=10):
+def get_emails(service, max_results=10):    
     results = service.users().messages().list(
-        userId='me', maxResults=max_results).execute()
+        userId='me',
+        q="(job OR internship OR hiring) -from:github.com -from:noreply",
+        maxResults=max_results
+    ).execute()
 
     messages = results.get('messages', [])
     email_list = []
