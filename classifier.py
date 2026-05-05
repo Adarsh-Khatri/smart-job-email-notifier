@@ -1,23 +1,36 @@
 def is_job_mail(subject, sender):
     subject = subject.lower()
     sender = sender.lower()
-    
-    if "github" in subject:
-        return False
 
-    # ❌ ignore system emails
-    ignore_sources = [
+    # ❌ BLOCK system / unwanted senders
+    blocked_senders = [
         "github.com",
         "notifications@",
         "no-reply",
-        "noreply"
+        "noreply",
+        "mailer-daemon",
     ]
 
-    for src in ignore_sources:
-        if src in sender:
-            return False
+    if any(b in sender for b in blocked_senders):
+        return False
 
-    # ✅ job-related keywords
+    # ❌ BLOCK GitHub-related subjects
+    if "github" in subject or "workflow" in subject:
+        return False
+
+    # ✅ ONLY ALLOW trusted job sources (IMPORTANT 🔥)
+    trusted_sources = [
+        "naukri",
+        "linkedin",
+        "internshala",
+        "indeed",
+        "glassdoor"
+    ]
+
+    if not any(src in sender for src in trusted_sources):
+        return False   # 🔥 strict filtering
+
+    # ✅ job keywords
     keywords = [
         "job", "internship", "hiring", "career",
         "opportunity", "opening", "vacancy",
